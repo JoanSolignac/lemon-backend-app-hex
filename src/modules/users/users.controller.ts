@@ -37,6 +37,7 @@ import { UpdateUserPasswordFeature } from './features/update-user-password.featu
 import { UpdateUserRoleFeature } from './features/update-user-role.feature';
 import { ActivateUserFeature } from './features/activate-user.feature';
 import { DeactivateUserFeature } from './features/deactivate-user.feature';
+import { ResetUserPasswordFeature } from './features/reset-user-password.feature';
 
 @ApiTags('Users')
 @Controller('users')
@@ -50,6 +51,7 @@ export class UsersController {
     private readonly updateUserRole: UpdateUserRoleFeature,
     private readonly activateUser: ActivateUserFeature,
     private readonly deactivateUser: DeactivateUserFeature,
+    private readonly resetUserPassword: ResetUserPasswordFeature,
   ) {}
 
   @Post()
@@ -195,5 +197,24 @@ export class UsersController {
   @UseAuth(Role.ADMINISTRADOR)
   async deactivate(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
     await this.deactivateUser.execute(id);
+  }
+
+  @Patch('/:id/reset-password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @ApiBearerAuth()
+  @ApiOperation({
+    summary: 'Restablecer la contraseña de un usuario usando su email',
+  })
+  @ApiParam({ name: 'id', type: 'string', format: 'uuid' })
+  @ApiResponse({
+    status: 204,
+    description: 'Contraseña restablecida exitosamente',
+  })
+  @ApiResponse({ status: 401, description: 'No autenticado' })
+  @ApiResponse({ status: 403, description: 'Sin permisos suficientes' })
+  @ApiResponse({ status: 404, description: 'Usuario no encontrado' })
+  @UseAuth(Role.ADMINISTRADOR)
+  async resetPassword(@Param('id', ParseUUIDPipe) id: string): Promise<void> {
+    await this.resetUserPassword.execute(id);
   }
 }

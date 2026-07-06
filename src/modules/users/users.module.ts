@@ -11,6 +11,7 @@ import { UpdateUserPasswordFeature } from './features/update-user-password.featu
 import { UpdateUserRoleFeature } from './features/update-user-role.feature';
 import { ActivateUserFeature } from './features/activate-user.feature';
 import { DeactivateUserFeature } from './features/deactivate-user.feature';
+import { ResetUserPasswordFeature } from './features/reset-user-password.feature';
 
 @Module({
   imports: [PrismaModule, AuthModule],
@@ -25,6 +26,7 @@ import { DeactivateUserFeature } from './features/deactivate-user.feature';
     UpdateUserRoleFeature,
     ActivateUserFeature,
     DeactivateUserFeature,
+    ResetUserPasswordFeature,
   ],
 })
 export class UsersModule {}
